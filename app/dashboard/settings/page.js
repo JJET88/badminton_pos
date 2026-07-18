@@ -80,14 +80,14 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-950 flex items-center justify-center p-4 text-slate-800 dark:text-slate-100">
         <div className="animate-pulse w-full max-w-2xl">
-          <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
-            <div className="h-6 sm:h-8 bg-gray-200 rounded mb-6"></div>
+          <div className="bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 rounded-2xl shadow-lg p-6 sm:p-8">
+            <div className="h-6 sm:h-8 bg-gray-200 dark:bg-slate-800 rounded mb-6"></div>
             <div className="space-y-4">
-              <div className="h-10 sm:h-12 bg-gray-200 rounded"></div>
-              <div className="h-10 sm:h-12 bg-gray-200 rounded"></div>
-              <div className="h-10 sm:h-12 bg-gray-200 rounded"></div>
+              <div className="h-10 sm:h-12 bg-gray-200 dark:bg-slate-800 rounded"></div>
+              <div className="h-10 sm:h-12 bg-gray-200 dark:bg-slate-800 rounded"></div>
+              <div className="h-10 sm:h-12 bg-gray-200 dark:bg-slate-800 rounded"></div>
             </div>
           </div>
         </div>
@@ -96,13 +96,13 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Settings</h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 p-4 sm:p-6 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto animate-fade-in">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-slate-100 mb-4 sm:mb-6 font-display">Settings</h1>
 
         {/* Tabs */}
-        <div className="bg-white rounded-lg shadow mb-4 sm:mb-6">
-          <div className="flex gap-1 sm:gap-2 border-b overflow-x-auto scrollbar-hide">
+        <div className="bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 rounded-lg shadow mb-4 sm:mb-6 overflow-hidden">
+          <div className="flex gap-1 sm:gap-2 border-b border-gray-200 dark:border-slate-800 overflow-x-auto scrollbar-hide">
             {[
               { id: "profile", name: "Profile", icon: "👤" },
               { id: "account", name: "Account", icon: "⚙️" },
@@ -112,10 +112,10 @@ export default function SettingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 border-b-2 transition-colors whitespace-nowrap text-sm sm:text-base ${
+                className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 border-b-2 transition-colors whitespace-nowrap text-sm sm:text-base cursor-pointer ${
                   activeTab === tab.id
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-gray-600 hover:text-gray-800"
+                    ? "border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-500"
+                    : "border-transparent text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200"
                 }`}
               >
                 <span className="text-base sm:text-lg">{tab.icon}</span>
@@ -127,7 +127,7 @@ export default function SettingsPage() {
           {/* Profile Tab */}
           {activeTab === "profile" && (
             <div className="p-4 sm:p-6">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Profile Information</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100 mb-4 sm:mb-6">Profile Information</h2>
 
               <div className="space-y-4 sm:space-y-5">
                 <InputField
@@ -146,11 +146,11 @@ export default function SettingsPage() {
                 />
 
                 <div>
-                  <label className="block text-gray-900 font-medium mb-2 text-sm sm:text-base">Role</label>
+                  <label className="block text-gray-950 dark:text-slate-250 font-medium mb-2 text-sm sm:text-base">Role</label>
                   <select
                     value={user.role}
                     onChange={(e) => setUser({ ...user, role: e.target.value })}
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-805 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-slate-200 text-sm sm:text-base cursor-pointer"
                   >
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
@@ -158,7 +158,7 @@ export default function SettingsPage() {
                 </div>
 
                 <button
-                  className="w-full sm:w-auto bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-white font-medium px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base"
+                  className="w-full sm:w-auto bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-white font-medium px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base cursor-pointer"
                   onClick={handleSave}
                   disabled={isUpdating}
                 >
@@ -179,18 +179,18 @@ export default function SettingsPage() {
           {/* Account Tab */}
           {activeTab === "account" && (
             <div className="p-4 sm:p-6">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Account Settings</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100 mb-4 sm:mb-6">Account Settings</h2>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
-                <p className="text-xs sm:text-sm text-blue-900">
+              <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                <p className="text-xs sm:text-sm text-blue-900 dark:text-blue-300">
                   <strong>Account ID:</strong> {authUser?.id}
                 </p>
-                <p className="text-xs sm:text-sm text-blue-900 mt-1">
+                <p className="text-xs sm:text-sm text-blue-900 dark:text-blue-300 mt-1">
                   <strong>Member since:</strong> {new Date(authUser?.created_at || Date.now()).toLocaleDateString()}
                 </p>
               </div>
 
-              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-slate-400 mb-4 sm:mb-6">
                 Manage your account preferences and settings here.
               </p>
 
@@ -203,7 +203,7 @@ export default function SettingsPage() {
           {/* Notifications Tab */}
           {activeTab === "notifications" && (
             <div className="p-4 sm:p-6">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Notifications</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100 mb-4 sm:mb-6">Notifications</h2>
 
               <div className="space-y-3 sm:space-y-4">
                 <ToggleItem label="Email notifications for new orders" />
@@ -218,7 +218,7 @@ export default function SettingsPage() {
           {/* Security Tab */}
           {activeTab === "security" && (
             <div className="p-4 sm:p-6">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Security</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100 mb-4 sm:mb-6">Security</h2>
 
               <PasswordChangeForm userId={authUser?.id} />
             </div>
@@ -234,13 +234,13 @@ export default function SettingsPage() {
 function InputField({ label, value, onChange, type = "text", placeholder = "" }) {
   return (
     <div>
-      <label className="block text-gray-900 font-medium mb-2 text-sm sm:text-base">{label}</label>
+      <label className="block text-gray-950 dark:text-slate-250 font-medium mb-2 text-sm sm:text-base">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400 text-sm sm:text-base"
+        className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-805 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-slate-250 placeholder-gray-400 text-sm sm:text-base"
       />
     </div>
   );
@@ -250,12 +250,12 @@ function ToggleItem({ label }) {
   const [checked, setChecked] = useState(false);
 
   return (
-    <div className="flex items-center justify-between py-2 sm:py-3 border-b border-gray-200">
-      <p className="text-gray-900 text-sm sm:text-base pr-4">{label}</p>
+    <div className="flex items-center justify-between py-2 sm:py-3 border-b border-gray-200 dark:border-slate-805">
+      <p className="text-gray-900 dark:text-slate-200 text-sm sm:text-base pr-4">{label}</p>
       <button
         onClick={() => setChecked(!checked)}
-        className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors ${
-          checked ? 'bg-blue-600' : 'bg-gray-200'
+        className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors cursor-pointer ${
+          checked ? 'bg-blue-600' : 'bg-gray-200 dark:bg-slate-800'
         }`}
         aria-label={`Toggle ${label}`}
       >
@@ -345,7 +345,7 @@ function PasswordChangeForm({ userId }) {
       />
 
       <button
-        className="w-full sm:w-auto bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-white font-medium px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base"
+        className="w-full sm:w-auto bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-white font-medium px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base cursor-pointer"
         onClick={handlePasswordChange}
         disabled={isUpdating}
       >
@@ -361,4 +361,4 @@ function PasswordChangeForm({ userId }) {
       </button>
     </div>
   );
-}
+}

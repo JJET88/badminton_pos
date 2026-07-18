@@ -82,21 +82,21 @@ export default function ProductManage() {
   // LOADING UI remains unchanged
   if (loading)
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
         <div className="relative">
-          <div className="w-20 h-20 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+          <div className="w-20 h-20 border-4 border-indigo-200 dark:border-slate-800 border-t-indigo-600 dark:border-t-indigo-500 rounded-full animate-spin"></div>
         </div>
-        <p className="mt-6 text-lg font-medium text-gray-700 animate-pulse">
+        <p className="mt-6 text-lg font-medium text-gray-700 dark:text-slate-350 animate-pulse">
           Loading amazing products...
         </p>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 animate-fade-in">
       <div className="mx-auto">
         {/* SEARCH + ADD PRODUCT */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <div className="bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 rounded-lg shadow-sm p-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="relative flex-1">
               <svg
@@ -115,7 +115,7 @@ export default function ProductManage() {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -123,7 +123,7 @@ export default function ProductManage() {
 
             <Link
               href="/products/create"
-              className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all whitespace-nowrap flex items-center justify-center gap-2"
+              className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all whitespace-nowrap flex items-center justify-center gap-2 cursor-pointer"
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
@@ -138,10 +138,10 @@ export default function ProductManage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer ${
                   selectedCategory === cat
                     ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-350 hover:bg-gray-200 dark:hover:bg-slate-700"
                 }`}
               >
                 {cat}
@@ -156,11 +156,11 @@ export default function ProductManage() {
             {currentProducts.map((p) => (
               <li
                 key={p.id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100"
+                className="bg-white dark:bg-slate-900 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 dark:border-slate-800"
               >
                 <Link
                   href={`/products/${p.id}`}
-                  className="block relative overflow-hidden bg-gray-50 aspect-square"
+                  className="block relative overflow-hidden bg-gray-50 dark:bg-slate-950/40 aspect-square"
                 >
                   <img
                     src={p.image || p.imageUrl}
@@ -175,22 +175,22 @@ export default function ProductManage() {
                 </Link>
 
                 <div className="p-4">
-                  <h2 className="text-base font-semibold text-gray-900 mb-1 line-clamp-2 min-h-[3rem]">
+                  <h2 className="text-base font-semibold text-gray-900 dark:text-slate-100 mb-1 line-clamp-2 min-h-[3rem]">
                     {p.title || p.name}
                   </h2>
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                  <p className="text-sm text-gray-600 dark:text-slate-400 mb-3 line-clamp-2">
                     {p.description}
                   </p>
 
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xl font-bold text-indigo-600">
-                      ${p.price}
+                    <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                      ฿{p.price}
                     </span>
 
                     <div className="flex gap-1">
                       <Link
                         href={`/products/${p.id}/edit`}
-                        className="p-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                        className="p-2 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-350 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                         title="Edit"
                       >
                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -200,7 +200,7 @@ export default function ProductManage() {
 
                       <button
                         onClick={() => handleDelete(p.id)}
-                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors cursor-pointer"
                         title="Delete"
                       >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -215,10 +215,10 @@ export default function ProductManage() {
           </ul>
         ) : (
           <div className="text-center py-16">
-            <p className="text-lg font-semibold text-gray-700">
+            <p className="text-lg font-semibold text-gray-700 dark:text-slate-300">
               No products found
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-slate-500 mt-1">
               Try adjusting your search or filters
             </p>
           </div>
@@ -227,14 +227,14 @@ export default function ProductManage() {
         {/* PAGINATION FIX */}
         <div className="flex justify-between items-center mt-6">
           <div>
-            <label className="mr-2 text-gray-600">Rows per page:</label>
+            <label className="mr-2 text-gray-600 dark:text-slate-400">Rows per page:</label>
             <select
               value={pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className="border px-3 py-1 rounded"
+              className="border border-gray-350 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 px-3 py-1 rounded cursor-pointer focus:outline-none"
             >
               <option value={4}>4</option>
               <option value={6}>6</option>
@@ -247,19 +247,19 @@ export default function ProductManage() {
             <button
               onClick={goPrev}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+              className="px-4 py-2 bg-gray-200 dark:bg-slate-800 text-gray-800 dark:text-slate-200 rounded disabled:opacity-50 cursor-pointer hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors"
             >
               Previous
             </button>
 
-            <span className="text-gray-700">
+            <span className="text-gray-700 dark:text-slate-350">
               Page {currentPage} of {totalPages}
             </span>
 
             <button
               onClick={goNext}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+              className="px-4 py-2 bg-gray-200 dark:bg-slate-800 text-gray-800 dark:text-slate-200 rounded disabled:opacity-50 cursor-pointer hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors"
             >
               Next
             </button>
@@ -268,4 +268,5 @@ export default function ProductManage() {
       </div>
     </div>
   );
+
 }

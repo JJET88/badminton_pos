@@ -17,7 +17,7 @@ export async function GET(req, { params }) {
 
     // Select all columns, let the database handle which ones exist
     const [rows] = await db.query(
-      'SELECT id, name, email, role, createdAt, updatedAt FROM users WHERE id = ?',
+      'SELECT id, name, email, role, points, createdAt, updatedAt FROM users WHERE id = ?',
       [id]
     );
 
@@ -153,7 +153,7 @@ export async function PUT(request, { params }) {
 
     // Fetch updated user
     const [updated] = await db.query(
-      'SELECT id, name, email, role, createdAt, updatedAt FROM users WHERE id = ?',
+      'SELECT id, name, email, role, points, createdAt, updatedAt FROM users WHERE id = ?',
       [id]
     );
 

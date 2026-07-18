@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TawBayin Badminton POS - Project Specification</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CDN (v3 for standalone file styling flexibility) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Mermaid.js CDN for live diagram rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f4ff',
+              100: '#d9e2ff',
+              200: '#bcceff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .light ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 3px;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Active Link highlight in sidebar */
+    .toc-link.active {
+      color: #2563eb;
+      font-weight: 600;
+      border-left-color: #2563eb;
+      padding-left: 1.25rem;
+    }
+    .dark .toc-link.active {
+      color: #60a5fa;
+      border-left-color: #60a5fa;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 font-sans antialiased transition-colors duration-300">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md">
+    <div class="max-w-[90rem] mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">🏸</span>
+        <div>
+          <span class="font-display font-bold text-lg tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">TawBayin Badminton POS</span>
+          <span class="ml-2 hidden sm:inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-200">PROJECT_SPEC</span>
+        </div>
+      </div>
+      
+      <!-- Theme & Action Controls -->
+      <div class="flex items-center gap-4">
+        <!-- Light / Dark Mode Toggle -->
+        <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Toggle Light/Dark Mode">
+          <!-- Light Mode Icon (Sun) -->
+          <svg id="sunIcon" class="hidden w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+          </svg>
+          <!-- Dark Mode Icon (Moon) -->
+          <svg id="moonIcon" class="hidden w-5 h-5 text-blue-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Document Wrapper -->
+  <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-8">
+    
+    <!-- Sidebar Navigation (Table of Contents) -->
+    <aside class="hidden lg:block w-64 shrink-0 sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto">
+      <nav class="flex flex-col space-y-1 border-l border-slate-200 dark:border-slate-800 py-2">
+        <a href="#overview" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">1. Project Overview</a>
+        <a href="#goals" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">2. Goals</a>
+        <a href="#scope" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">3. Scope</a>
+        <a href="#roles" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">4. User Roles</a>
+        <a href="#functional" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">5. Functional Requirements</a>
+        <a href="#nonfunctional" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">6. Non-Functional</a>
+        <a href="#datamodel" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">7. Data Model (MySQL)</a>
+        <a href="#api" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">8. API Overview</a>
+        <a href="#ui" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">9. UI Overview</a>
+        <a href="#workflows" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">10. Key Workflows</a>
+        <a href="#architecture" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">11. Architecture</a>
+        <a href="#milestones" class="toc-link block py-1.5 px-4 text-sm text-slate-500 dark:text-slate-400 border-l-2 border-transparent hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700 transition-all">12. Milestones</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="flex-1 max-w-4xl min-w-0">
+      
+      <!-- Title Block -->
+      <div class="mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+        <h1 class="font-display font-extrabold text-4xl sm:text-5xl text-slate-900 dark:text-white leading-tight mb-4">
+          TawBayin Badminton POS
+        </h1>
+        <p class="text-xl text-slate-500 dark:text-slate-400 font-light">
+          A full-stack, responsive Point of Sale and eCommerce catalog system customized for managing inventory, cash transactions, vouchers, and rewards loyalty.
+        </p>
+      </div>
+
+      <!-- 1. Overview -->
+      <section id="overview" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">📋</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">1. Project Overview</h2>
+        </div>
+        <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 space-y-4">
+          <p>
+            TawBayin Badminton POS provides Badminton retailers with a high-performance portal. It bridges catalog management and instant store checkout registers, validating stock availability instantly. State is managed on the client dynamically using Zustand, supported by a transactional MySQL backend.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block mb-1">Core System</span>
+              <span class="text-base font-bold text-slate-800 dark:text-slate-100">Next.js 15 (App Router)</span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block mb-1">Currency Mode</span>
+              <span class="text-base font-bold text-slate-800 dark:text-slate-100">Thai Baht (฿)</span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block mb-1">Support Assistant</span>
+              <span class="text-base font-bold text-slate-800 dark:text-slate-100">n8n Chat Overlay</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Goals -->
+      <section id="goals" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🎯</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">2. Goals</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex gap-4 p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="text-2xl">⚡</div>
+            <div>
+              <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Cashier Speed</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Streamline storefront cart checkout using instant title searches, category click filters, and fast totals updating.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="text-2xl">🔒</div>
+            <div>
+              <h3 class="font-semibold text-slate-900 dark:text-white mb-1">ACID Safety</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Use strict database transactions so product inventory numbers are checked and subtracted safely without anomalies.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="text-2xl">🎁</div>
+            <div>
+              <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Client Retention</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Embed a loyalty program allowing cashiers to apply points for discount reductions, and automatically accumulate new points.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="text-2xl">🤖</div>
+            <div>
+              <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Interactive Support</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Provide in-app guidance for store cashiers via an overlay chat integrated with an n8n webhook workflow.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Scope -->
+      <section id="scope" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🔍</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">3. Scope</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- In Scope -->
+          <div class="bg-emerald-50/50 dark:bg-emerald-950/20 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-900">
+            <h3 class="font-semibold text-emerald-800 dark:text-emerald-300 text-lg mb-4 flex items-center gap-2">
+              <span>✅</span> In-Scope
+            </h3>
+            <ul class="space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">•</span>
+                <span>JWT auth session checks using secure HTTP-only cookies.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">•</span>
+                <span>Responsive storefront layout with product category tag filters.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">•</span>
+                <span>Vouchers support (fixed/percentage) and loyalty point calculations.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">•</span>
+                <span>Dashboard KPIs & time-series chart toggle (Day/Week/Month/Year).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 mt-0.5">•</span>
+                <span>Products CRUD, Voucher config settings, and User Point modifications.</span>
+              </li>
+            </ul>
+          </div>
+          <!-- Out of Scope -->
+          <div class="bg-rose-50/50 dark:bg-rose-950/20 p-6 rounded-2xl border border-rose-100 dark:border-rose-900">
+            <h3 class="font-semibold text-rose-800 dark:text-rose-300 text-lg mb-4 flex items-center gap-2">
+              <span>❌</span> Out-of-Scope (Future)
+            </h3>
+            <ul class="space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-rose-400 mt-0.5">•</span>
+                <span>Direct barcode scanner hardware interfaces (uses standard keyboard emulation).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-rose-400 mt-0.5">•</span>
+                <span>Offline caching synchronization if internet disconnects.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-rose-400 mt-0.5">•</span>
+                <span>Integration with physical USB/network thermal ticket printers.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Roles -->
+      <section id="roles" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">👥</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">4. User Roles</h2>
+        </div>
+        <div class="space-y-6">
+          <!-- Admin -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded bg-purple-100 text-purple-800 dark:bg-purple-950/80 dark:text-purple-200 text-xs font-bold uppercase">admin</span>
+                <span>Administrator</span>
+              </h3>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Full store configuration and database operations authority.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300">
+              <span class="flex items-center gap-2">🛡️ Full product catalogs creation & stock updates</span>
+              <span class="flex items-center gap-2">📊 Access sales dashboard trends and metrics charts</span>
+              <span class="flex items-center gap-2">🎟️ Configure discount voucher codes</span>
+              <span class="flex items-center gap-2">👤 CRUD operations on user roles, emails, and points</span>
+            </div>
+          </div>
+          <!-- Cashier -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-200 text-xs font-bold uppercase">user</span>
+                <span>Cashier Operator</span>
+              </h3>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Storefront operator processing customer orders.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300">
+              <span class="flex items-center gap-2">🛒 Add items to carts and calculate subtotal/tax</span>
+              <span class="flex items-center gap-2">⭐ Apply client rewards point discounts (10 pts = ฿1)</span>
+              <span class="flex items-center gap-2">🏷️ Verify and apply discount codes</span>
+              <span class="flex items-center gap-2">📜 Look up past transaction records processed under their ID</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Functional Requirements -->
+      <section id="functional" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">⚙️</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">5. Functional Requirements</h2>
+        </div>
+        <div class="space-y-6 text-sm text-slate-600 dark:text-slate-300">
+          
+          <!-- Auth -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white text-base mb-3">5.1 Authentication & Profile</h3>
+            <p class="mb-2">Users log in with email/password credentials. Password verification uses bcryptjs. Sessions are persisted in browser HTTP-only cookies (`token`).</p>
+            <p>Every 30 seconds, client state performs auto-session polling via `/api/auth/me` to refresh display fields and point totals.</p>
+          </div>
+
+          <!-- Catalog -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white text-base mb-3">5.2 POS Storefront & Product Catalog</h3>
+            <p class="mb-2">Displays active item cards including price and stock labels. Users search using fuzzy matching keywords and filter by categories (Rackets, Shuttlecocks, Shoes, etc.).</p>
+            <p><strong>Stock Checking:</strong> Item cards block adding quantities higher than database stock values. Cart forms disable checkout triggers if items are out of stock.</p>
+          </div>
+
+          <!-- Vouchers & Points -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white text-base mb-3">5.3 Vouchers & Reward Points</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                <span class="font-semibold text-slate-900 dark:text-white block mb-1">Promo Vouchers</span>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Validates expiration dates and minimum subtotal thresholds. Types support percentage (capped at 100% max) or flat Baht reduction values.</p>
+              </div>
+              <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                <span class="font-semibold text-slate-900 dark:text-white block mb-1">Loyalty Rewards</span>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Redemption ratio of <strong>10 points = ฿1 discount</strong>. Accrual rules add <strong>1 point for every ฿10</strong> spent on the final checkout total.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white text-base mb-3">5.4 Checkout Calculations</h3>
+            <p class="mb-4">Calculations run sequentially on both client and server checks:</p>
+            <div class="p-4 bg-slate-900 text-indigo-200 rounded-lg font-mono text-xs space-y-1">
+              <p>Subtotal = Sum(Item Qty * Price)</p>
+              <p>Total Discount = Voucher Discount + Points Discount</p>
+              <p>Tax (10%) = (Subtotal - Total Discount) * 0.10</p>
+              <p>Final Total = (Subtotal - Total Discount) + Tax</p>
+            </div>
+          </div>
+
+          <!-- Chatbot -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white text-base mb-3">5.5 n8n Customer Support Assistant</h3>
+            <p>An interactive floating chat bubble is injected in the browser window. When operators open it, the chatbot communicates directly with an n8n webhook workflow to answer POS usage questions and guide the cashier on store policies.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Non-Functional -->
+      <section id="nonfunctional" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🛡️</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">6. Non-Functional Requirements</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600 dark:text-slate-300">
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <span class="font-semibold text-slate-900 dark:text-white block mb-2">🔒 Security & Hashing</span>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Passwords hashed using bcryptjs. API endpoints block unauthorized queries. JWT tokens use secure HttpOnly settings to prevent XSS attacks.</p>
+          </div>
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <span class="font-semibold text-slate-900 dark:text-white block mb-2">🔄 Database Constraints</span>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Unique keys for email, products, and voucher codes. RESTRICT constraints prevent deleting products or cashiers containing sales transaction logs.</p>
+          </div>
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <span class="font-semibold text-slate-900 dark:text-white block mb-2">⚡ Speed & Connection Pools</span>
+            <p class="text-xs text-slate-500 dark:text-slate-400">MySQL connections use a pool to avoid leaks. Key API listings (products and sales) utilize search query pagination for fast responses.</p>
+          </div>
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <span class="font-semibold text-slate-900 dark:text-white block mb-2">📱 Visual Aesthetics</span>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Tailwind CSS v4 layouts, clean transitions, loading state icons, and interactive SweetAlert2 validation messages.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Data Model -->
+      <section id="datamodel" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🗄️</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">7. Database Schema (MySQL)</h2>
+        </div>
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 relative group">
+          <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400 font-mono">
+            <span>mysql_schema.sql</span>
+            <button onclick="copyCode(this)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition text-slate-300">Copy</button>
+          </div>
+          <pre class="p-4 overflow-x-auto text-xs text-emerald-400 font-mono leading-relaxed"><code id="sqlCode">CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+  points INT DEFAULT 0,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL UNIQUE,
+  description TEXT DEFAULT NULL,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  stock INT NOT NULL DEFAULT 0,
+  category VARCHAR(100) DEFAULT 'Uncategorized',
+  image VARCHAR(255) DEFAULT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS vouchers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(50) NOT NULL UNIQUE,
+  type ENUM('percentage', 'fixed') NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  minTotal DECIMAL(10,2) DEFAULT 0.00,
+  expiresAt DATETIME DEFAULT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS sales (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  total DECIMAL(10,2) NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL,
+  tax DECIMAL(10,2) NOT NULL,
+  discount DECIMAL(10,2) DEFAULT 0.00,
+  paymentType VARCHAR(50) NOT NULL,
+  voucherCode VARCHAR(50) DEFAULT NULL,
+  cashierId INT DEFAULT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (cashierId) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS saleitems (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  saleId INT NOT NULL,
+  productId INT NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (saleId) REFERENCES sales(id) ON DELETE CASCADE,
+  FOREIGN KEY (productId) REFERENCES products(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</code></pre>
+        </div>
+      </section>
+
+      <!-- 8. API Overview -->
+      <section id="api" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🔌</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">8. API Endpoint Reference</h2>
+        </div>
+        <div class="space-y-4">
+          
+          <!-- Auth APIs -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+              <h3 class="font-semibold text-slate-800 dark:text-slate-200 text-sm uppercase tracking-wider">Authentication</h3>
+            </div>
+            <div class="p-4 space-y-3 font-mono text-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold w-16 text-center">POST</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/auth/register</span>
+                <span class="text-slate-400 sm:ml-auto">Creates a cashier account</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold w-16 text-center">POST</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/auth/login</span>
+                <span class="text-slate-400 sm:ml-auto">Authenticates, sets JWT cookie token</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold w-16 text-center">GET</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/auth/me</span>
+                <span class="text-slate-400 sm:ml-auto">Returns user session status</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product APIs -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+              <h3 class="font-semibold text-slate-800 dark:text-slate-200 text-sm uppercase tracking-wider">Products Inventory</h3>
+            </div>
+            <div class="p-4 space-y-3 font-mono text-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold w-16 text-center">GET</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/products?category=&amp;search=&amp;lowStock=</span>
+                <span class="text-slate-400 sm:ml-auto">Lists products with filters</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold w-16 text-center">POST</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/products</span>
+                <span class="text-slate-400 sm:ml-auto">Creates a new product</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold w-16 text-center">PUT</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/products</span>
+                <span class="text-slate-400 sm:ml-auto">Updates stock/categories/prices</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 font-bold w-16 text-center">DELETE</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/products?id={id}</span>
+                <span class="text-slate-400 sm:ml-auto">Deletes product unless referenced in sales</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sales APIs -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+              <h3 class="font-semibold text-slate-800 dark:text-slate-200 text-sm uppercase tracking-wider">Checkout &amp; Sales</h3>
+            </div>
+            <div class="p-4 space-y-3 font-mono text-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold w-16 text-center">GET</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/sales?cashierId=&amp;startDate=&amp;includeDetails=true</span>
+                <span class="text-slate-400 sm:ml-auto">Lists sales history records</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold w-16 text-center">POST</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/sales</span>
+                <span class="text-slate-400 sm:ml-auto">Performs checkout under transaction</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 font-bold w-16 text-center">DELETE</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/sales?id={id}&amp;restoreStock=true</span>
+                <span class="text-slate-400 sm:ml-auto">Deletes record and optional stock rollbacks</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CRM Users APIs -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+              <h3 class="font-semibold text-slate-800 dark:text-slate-200 text-sm uppercase tracking-wider">CRM Users &amp; Rewards</h3>
+            </div>
+            <div class="p-4 space-y-3 font-mono text-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold w-16 text-center">GET</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/users?role=&amp;search=</span>
+                <span class="text-slate-400 sm:ml-auto">Lists registered cashiers and metrics</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold w-16 text-center">PUT</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/users/[id]</span>
+                <span class="text-slate-400 sm:ml-auto">Updates user profile, role, and details</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold w-16 text-center">POST</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/users/update-points</span>
+                <span class="text-slate-400 sm:ml-auto">Adds earned loyalty points (Baht total / 10)</span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold w-16 text-center">POST</span>
+                <span class="text-slate-800 dark:text-slate-200">/api/users/redeem-points</span>
+                <span class="text-slate-400 sm:ml-auto">Deducts points used for billing discount</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. UI Overview -->
+      <section id="ui" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🖼️</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">9. UI Layout Overview</h2>
+        </div>
+        <div class="space-y-6 text-sm text-slate-600 dark:text-slate-300">
+          
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-2">POS Main Storefront Routing</h3>
+            <p class="mb-4">A simple layout separating product discovery card listings on the left, and the shopping receipt sidebar drawer on the right.</p>
+            <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-3 bg-slate-50 dark:bg-slate-950 font-mono text-[10px] grid grid-cols-12 gap-2 text-center">
+              <div class="col-span-12 p-2 bg-blue-600 text-white rounded">Header: Logo | Search Bar | Cashier Name Dropdown | Active Points Tracker</div>
+              <div class="col-span-8 p-6 bg-slate-200 dark:bg-slate-800 rounded">Main Catalog Grid (Products lists, Search inputs, pagination numbers)</div>
+              <div class="col-span-4 p-6 bg-slate-300 dark:bg-slate-700/60 rounded">Shopping Cart (Cart listing, Apply vouchers, points discount trigger, Checkout button)</div>
+              <div class="col-span-12 p-2 bg-slate-200 dark:bg-slate-800 rounded">n8n Customer Support Assistant Floating Icon (Bottom-Right)</div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Admin Dashboard Panel Routing</h3>
+            <p class="mb-4">Features a collapsible vertical navigation bar alongside main panels displaying KPIs and Recharts stats.</p>
+            <div class="border border-slate-200 dark:border-slate-800 rounded-lg p-3 bg-slate-50 dark:bg-slate-950 font-mono text-[10px] grid grid-cols-12 gap-2 text-center">
+              <div class="col-span-3 rowspan-2 p-12 bg-slate-300 dark:bg-slate-800 rounded">Sidebar (collapsible navigation lists)</div>
+              <div class="col-span-9 p-2 bg-blue-600 text-white rounded">Topbar (Greetings, date toggles)</div>
+              <div class="col-span-9 p-6 bg-slate-200 dark:bg-slate-700/60 rounded">Dashboard Panel Content (Metric Cards, Recharts Analytics graphs, item grids)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. Workflows -->
+      <section id="workflows" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🔄</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">10. Key Workflows (Mermaid Diagram)</h2>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-300 mb-6">
+          This sequence diagram illustrates the client-side actions, server validation transactions, database commit steps, and final point deductions/additions during checkouts.
+        </p>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 overflow-x-auto flex justify-center">
+          <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Cashier as Cashier
+    participant Cart as Zustand Cart Store
+    participant Checkout as Checkout Drawer
+    participant API as Next.js API (/api/sales)
+    participant DB as MySQL DB
+    participant Auth as Zustand Auth Store
+
+    Cashier->>Cart: Add Products & Adjust Quantities
+    Cashier->>Checkout: Apply Voucher / Redeem Points
+    Cashier->>Checkout: Click "Confirm Payment"
+    Note over Checkout: Verify Local Stock Levels
+    Checkout->>API: POST /api/sales (items, total, cashierId, voucherCode)
+    
+    rect rgb(30, 41, 59)
+        Note over API: Start DB Transaction
+        API->>DB: Query current stock for each product
+        alt Stock Available
+            API->>DB: INSERT into sales & saleitems
+            API->>DB: UPDATE products SET stock = stock - quantity
+            API->>DB: Commit Transaction
+            API-->>Checkout: 201 Created (Sale Receipt JSON)
+        else Insufficient Stock
+            API->>DB: Rollback Transaction
+            API-->>Checkout: 400 Bad Request (Stock Error)
+        end
+    end
+
+    alt Sale Success
+        Checkout->>API: POST /api/users/redeem-points (if points used)
+        API->>DB: Deduct points from user account
+        Checkout->>API: POST /api/users/update-points (adds points earned)
+        API->>DB: Add points (1 point per ฿10 spent)
+        API-->>Checkout: Return updated points
+        Checkout->>Auth: Sync updated points in state
+        Checkout->>Cart: Clear cart & close drawer
+        Checkout->>Cashier: Show success alert
+    else Sale Failure
+        Checkout->>Cashier: Show error toast (no points modified)
+    end
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. Architecture -->
+      <section id="architecture" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">🏛️</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">11. Technical Architecture</h2>
+        </div>
+        <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 space-y-4">
+          <p>
+            The project employs a structured three-tier full-stack application flow running inside the Next.js runtime:
+          </p>
+          <div class="space-y-4 mt-4">
+            <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+              <span class="font-semibold text-slate-900 dark:text-white block">1. Client / Presentation Layer</span>
+              <p class="text-xs text-slate-500 mt-1">Handles catalog searches, shopping cart logic, and theme selectors. Context values like auth details, active points, and item catalogs are cached in Zustand client stores.</p>
+            </div>
+            <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+              <span class="font-semibold text-slate-900 dark:text-white block">2. API Controller / Middleware Layer</span>
+              <p class="text-xs text-slate-500 mt-1">Written as App Router API endpoint routes `/app/api`. Performs parameters validation, parses JWT HttpOnly token session values, and returns JSON payloads.</p>
+            </div>
+            <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+              <span class="font-semibold text-slate-900 dark:text-white block">3. Storage Layer</span>
+              <p class="text-xs text-slate-500 mt-1">A relational MySQL database linked via `mysql2/promise` connection pools. Enforces constraints (unique codes/emails) and processes checkout transactions safely using ACID properties.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. Milestones -->
+      <section id="milestones" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="text-2xl">📅</span>
+          <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white">12. Implementation Milestones</h2>
+        </div>
+        <div class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 space-y-8 py-2">
+          
+          <div class="relative pl-6">
+            <span class="absolute left-[-9px] top-1.5 w-4.5 h-4.5 rounded-full bg-blue-600 border-4 border-white dark:border-slate-950"></span>
+            <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 block">Milestone 1</span>
+            <h4 class="font-semibold text-slate-900 dark:text-white">Database Setup &amp; JWT Authentication</h4>
+            <p class="text-xs text-slate-500 mt-1">Establish MySQL relational databases. Deploy endpoints for user registration, user login, and `/me` authorization checks using HTTP-only cookies.</p>
+          </div>
+
+          <div class="relative pl-6">
+            <span class="absolute left-[-9px] top-1.5 w-4.5 h-4.5 rounded-full bg-blue-600 border-4 border-white dark:border-slate-950"></span>
+            <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 block">Milestone 2</span>
+            <h4 class="font-semibold text-slate-900 dark:text-white">POS Catalog Grid &amp; Zustand Stores</h4>
+            <p class="text-xs text-slate-500 mt-1">Integrate storefront views with keyword searches and filters. Build client state handlers storing checkout items locally.</p>
+          </div>
+
+          <div class="relative pl-6">
+            <span class="absolute left-[-9px] top-1.5 w-4.5 h-4.5 rounded-full bg-blue-600 border-4 border-white dark:border-slate-950"></span>
+            <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 block">Milestone 3</span>
+            <h4 class="font-semibold text-slate-900 dark:text-white">ACID Checkouts &amp; Rewards Points</h4>
+            <p class="text-xs text-slate-500 mt-1">Deploy transaction checkout checkouts on database tables. Implement points accumulation (฿10 = 1 point) and point discount redemptions.</p>
+          </div>
+
+          <div class="relative pl-6">
+            <span class="absolute left-[-9px] top-1.5 w-4.5 h-4.5 rounded-full bg-blue-600 border-4 border-white dark:border-slate-950"></span>
+            <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 block">Milestone 4</span>
+            <h4 class="font-semibold text-slate-900 dark:text-white">Dashboard Reporting Analytics</h4>
+            <p class="text-xs text-slate-500 mt-1">Build metrics widgets and connect Recharts line graphs toggleable by date metrics.</p>
+          </div>
+
+          <div class="relative pl-6">
+            <span class="absolute left-[-9px] top-1.5 w-4.5 h-4.5 rounded-full bg-blue-600 border-4 border-white dark:border-slate-950"></span>
+            <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 block">Milestone 5</span>
+            <h4 class="font-semibold text-slate-900 dark:text-white">Inventory CRUD &amp; n8n Chat overlay</h4>
+            <p class="text-xs text-slate-500 mt-1">Deploy admin CRUD filters panels. Embed the n8n chatbot bubble widget passing cashier properties dynamically.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 mt-20 text-center text-xs text-slate-400">
+    <p>© 2026 TawBayin Badminton Store. Configured for Thai Baht (฿) Operations.</p>
+  </footer>
+
+  <!-- Page Interactivity Scripts -->
+  <script>
+    // 1. Initialize Mermaid.js
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      themeVariables: {
+        background: '#1e293b',
+        primaryColor: '#3b82f6',
+        primaryTextColor: '#f8fafc',
+        lineColor: '#cbd5e1'
+      }
+    });
+
+    // 2. Light / Dark Theme Toggle
+    const htmlEl = document.documentElement;
+    const themeBtn = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        htmlEl.classList.add('dark');
+        htmlEl.classList.remove('light');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        htmlEl.classList.add('light');
+        htmlEl.classList.remove('dark');
+        moonIcon.classList.remove('hidden');
+        sunIcon.classList.add('hidden');
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    // Default Theme Init
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
+      applyTheme(currentTheme);
+    });
+
+    // 3. Highlight Table of Contents Link during Scrolling
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.toc-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - 120)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').slice(1) === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // 4. Code Copy Helper
+    function copyCode(btn) {
+      const codeText = document.getElementById('sqlCode').innerText;
+      navigator.clipboard.writeText(codeText).then(() => {
+        btn.innerText = 'Copied!';
+        btn.classList.add('bg-emerald-600', 'text-white');
+        setTimeout(() => {
+          btn.innerText = 'Copy';
+          btn.classList.remove('bg-emerald-600', 'text-white');
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

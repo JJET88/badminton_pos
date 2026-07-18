@@ -43,8 +43,8 @@ const Cart = ({ cart: { id, productId, quantity } }) => {
 
   return (
     <div className="
-      bg-white
-      border border-gray-200 
+      bg-white dark:bg-slate-900
+      border border-gray-200 dark:border-slate-800
       rounded-2xl 
       p-5 
       shadow-sm
@@ -53,29 +53,30 @@ const Cart = ({ cart: { id, productId, quantity } }) => {
       grid grid-cols-6
       gap-4
       items-center
+      text-slate-800 dark:text-slate-200
     ">
       {/* Image */}
       <div className="col-span-1 flex justify-center">
         <img
           src={product.image}
           alt={product.title}
-          className="h-20 w-20 object-contain rounded-md bg-gray-50 p-2"
+          className="h-20 w-20 object-contain rounded-md bg-gray-50 dark:bg-slate-800 p-2"
         />
       </div>
 
       {/* Product Info */}
       <div className="col-span-3">
         <p className="font-semibold text-lg">{product.title}</p>
-        <p className="text-gray-500 text-sm mt-1">${product.price.toFixed(2)}</p>
+        <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">฿{product.price.toFixed(2)}</p>
       </div>
 
       {/* Quantity */}
       <div className="col-span-1 flex flex-col items-center">
-        <span className="text-gray-700 mb-1 text-sm">Qty</span>
+        <span className="text-gray-700 dark:text-slate-300 mb-1 text-sm">Qty</span>
         <div className="flex items-center gap-2">
           <button
             onClick={handleDecreaseQuantity}
-            className="px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+            className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 text-gray-800 dark:text-slate-200 transition cursor-pointer"
           >
             -
           </button>
@@ -84,7 +85,7 @@ const Cart = ({ cart: { id, productId, quantity } }) => {
 
           <button
             onClick={handleIncreaseQuantity}
-            className="px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+            className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 text-gray-800 dark:text-slate-200 transition cursor-pointer"
           >
             +
           </button>
@@ -93,10 +94,11 @@ const Cart = ({ cart: { id, productId, quantity } }) => {
 
       {/* Price */}
       <div className="col-span-1 text-right">
-        <p className="text-xl font-bold">${cost.toFixed(2)}</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-white">฿{cost.toFixed(2)}</p>
       </div>
     </div>
   );
+
 };
 
 export default Cart;

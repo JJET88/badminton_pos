@@ -39,10 +39,10 @@ const CartSection = () => {
 
 	return (
 		<>
-			<div className="bg-gray-50 min-h-screen">
+			<div className="bg-gray-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100">
 				{/* MAIN CART SECTION */}
 				<section
-					className={`flex flex-col min-h-screen bg-gray-50 max-w-7xl mx-auto transition-all duration-300 
+					className={`flex flex-col min-h-screen bg-gray-50 dark:bg-slate-950 max-w-7xl mx-auto transition-all duration-300 
             ${open ? "z-[-1] blur-sm" : "z-0 blur-0"}`}
 				>
 					<CartHeader />
@@ -55,12 +55,12 @@ const CartSection = () => {
 								width={200}
 								height={200}
 							/>
-							<p className="text-lg text-gray-600 mt-4">
+							<p className="text-lg text-gray-600 dark:text-slate-400 mt-4">
 								Your cart is empty 😔
 							</p>
 							<Link
-								href="/products"
-								className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+								href="/"
+								className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors"
 							>
 								Shop Now
 							</Link>
@@ -74,27 +74,27 @@ const CartSection = () => {
 							</div>
 
 							{/* SUMMARY FOOTER */}
-							<div className="sticky bottom-0 w-full bg-white shadow p-4 rounded-t-lg">
+							<div className="sticky bottom-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow p-4 rounded-t-lg">
 								<div className="grid grid-cols-3 gap-4 text-sm">
 									<div className="text-center">
-										<p className="text-gray-500">Subtotal</p>
-										<p className="font-semibold">${subtotal.toFixed(2)}</p>
+										<p className="text-gray-500 dark:text-slate-400">Subtotal</p>
+										<p className="font-semibold text-slate-800 dark:text-slate-200">฿{subtotal.toFixed(2)}</p>
 									</div>
 									<div className="text-center">
-										<p className="text-gray-500">Tax (10%)</p>
-										<p className="font-semibold">${tax.toFixed(2)}</p>
+										<p className="text-gray-500 dark:text-slate-400">Tax (10%)</p>
+										<p className="font-semibold text-slate-800 dark:text-slate-200">฿{tax.toFixed(2)}</p>
 									</div>
 									<div className="text-center">
-										<p className="text-gray-500">Total</p>
-										<p className="text-xl font-bold text-green-600">
-											${total.toFixed(2)}
+										<p className="text-gray-500 dark:text-slate-400">Total</p>
+										<p className="text-xl font-bold text-green-600 dark:text-green-400">
+											฿{total.toFixed(2)}
 										</p>
 									</div>
 								</div>
 
 								<button
 									onClick={openSection}
-									className="mt-4 w-full bg-green-600 text-white py-2 rounded-full hover:bg-green-700"
+									className="mt-4 w-full bg-green-600 text-white py-2 rounded-full hover:bg-green-700 cursor-pointer transition-colors"
 								>
 									Proceed to Checkout 💳
 								</button>

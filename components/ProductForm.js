@@ -97,24 +97,24 @@ export default function ProductForm({ productId }) {
 
   if (fetching)
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <span className="text-gray-600 animate-pulse">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+        <span className="text-gray-600 dark:text-slate-400 animate-pulse">
           Loading product data...
         </span>
       </div>
     );
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
-      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-xl border border-gray-100">
-        <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-slate-950 p-6 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+      <div className="bg-white dark:bg-slate-900 shadow-2xl rounded-2xl p-8 w-full max-w-xl border border-gray-100 dark:border-slate-800">
+        <h1 className="text-3xl font-extrabold text-center text-gray-800 dark:text-slate-100 mb-6 font-display">
           🛍️ {productId ? "Edit Product" : "Create New Product"}
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">
               Title
             </label>
             <input
@@ -124,12 +124,12 @@ export default function ProductForm({ productId }) {
               value={form.title}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </div>
           {/* Description */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
               Description *
             </label>
             <textarea
@@ -138,15 +138,15 @@ export default function ProductForm({ productId }) {
               placeholder="Describe your product..."
               value={form.description}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:outline-none resize-none transition-all shadow-sm"
+              className="w-full px-4 py-3 bg-white dark:bg-slate-950 border-2 border-gray-250 dark:border-slate-850 rounded-lg text-gray-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:outline-none resize-none transition-all shadow-sm"
             />
           </div>
 
           {/* Price, Stock & Category */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
-                Price (USD)
+              <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">
+                Price (฿ THB)
               </label>
               <input
                 name="price"
@@ -155,12 +155,12 @@ export default function ProductForm({ productId }) {
                 value={form.price}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 transition"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">
                 Stock
               </label>
               <input
@@ -170,30 +170,29 @@ export default function ProductForm({ productId }) {
                 value={form.stock}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 transition"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               />
             </div>
-           
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">
                 Category
               </label>
               <input
                 name="category"
-              type="text"
-              placeholder="Product title"
+                type="text"
+                placeholder="Product category"
                 value={form.category}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 transition"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               />
             </div>
           </div>
 
           {/* Image */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">
               Image URL
             </label>
             <input
@@ -203,7 +202,7 @@ export default function ProductForm({ productId }) {
               value={form.image}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 transition"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
 
             {form.image && (
@@ -211,7 +210,7 @@ export default function ProductForm({ productId }) {
                 <img
                   src={form.image}
                   alt="Preview"
-                  className="w-48 h-48 object-contain rounded-xl border shadow-lg"
+                  className="w-48 h-48 object-contain rounded-xl border border-gray-200 dark:border-slate-800 shadow-lg p-2 bg-white dark:bg-slate-950"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                   }}
@@ -225,7 +224,7 @@ export default function ProductForm({ productId }) {
             <button
               type="button"
               onClick={() => router.push("/dashboard/products")}
-              className="flex-1 px-6 py-3 bg-white/70 backdrop-blur-sm text-gray-700 rounded-lg font-semibold hover:bg-white border border-gray-200 transition-all"
+              className="flex-1 px-6 py-3 bg-white/70 dark:bg-slate-800 text-gray-700 dark:text-slate-350 rounded-lg font-semibold hover:bg-white dark:hover:bg-slate-750 border border-gray-200 dark:border-slate-850 transition-all cursor-pointer"
             >
               Cancel
             </button>
@@ -233,7 +232,7 @@ export default function ProductForm({ productId }) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 disabled:bg-gray-400 transition-all flex justify-center items-center gap-2"
+              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 hover:shadow-lg hover:scale-[1.02] active:scale-95 disabled:bg-gray-400 transition-all flex justify-center items-center gap-2 cursor-pointer"
             >
               {loading && (
                 <svg
@@ -271,3 +270,4 @@ export default function ProductForm({ productId }) {
     </div>
   );
 }
+

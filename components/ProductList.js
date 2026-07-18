@@ -105,23 +105,23 @@ export default function ProductList() {
 
   if (loading)
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
         <div className="relative">
-          <div className="w-20 h-20 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+          <div className="w-20 h-20 border-4 border-indigo-200 dark:border-slate-800 border-t-indigo-600 dark:border-t-blue-500 rounded-full animate-spin"></div>
         </div>
-        <p className="mt-6 text-lg font-medium text-gray-700 animate-pulse">
+        <p className="mt-6 text-lg font-medium text-gray-700 dark:text-slate-300 animate-pulse">
           Loading amazing products...
         </p>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <Header search={search} setSearch={setSearch} />
 
         {/* PROMOTIONAL BANNERS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
           <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
             <Zap className="w-10 h-10 mb-2" />
             <h3 className="text-xl font-bold mb-1">Fast Shipping</h3>
@@ -139,7 +139,7 @@ export default function ProductList() {
             <h3 className="text-xl font-bold mb-1">Earn Points</h3>
             <p className="text-sm text-purple-100">Get 5 points with every purchase</p>
           </div>
-        </div>
+        </div> */}
 
         {/* ENHANCED SLIDESHOW */}
         {/* <div className="max-w-6xl mx-auto my-8">
@@ -160,14 +160,14 @@ export default function ProductList() {
                 className={`px-5 py-2.5 rounded-lg font-medium transition-all shadow-sm flex items-center gap-2 ${
                   selectedCategory === cat
                     ? "bg-blue-600 text-white scale-105 shadow-md"
-                    : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                    : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700"
                 }`}
               >
                 <span>{cat}</span>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
                   selectedCategory === cat 
                     ? "bg-blue-500" 
-                    : "bg-gray-100"
+                    : "bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300"
                 }`}>
                   {count}
                 </span>
@@ -178,28 +178,28 @@ export default function ProductList() {
 
         {/* RESULTS INFO & VIEW TOGGLE */}
         <div className="flex justify-between items-center mb-6">
-          <div className="text-gray-600">
-            Showing <span className="font-semibold text-gray-900">{currentProducts.length}</span> of{" "}
-            <span className="font-semibold text-gray-900">{filteredProducts.length}</span> products
+          <div className="text-gray-600 dark:text-slate-400">
+            Showing <span className="font-semibold text-gray-900 dark:text-white">{currentProducts.length}</span> of{" "}
+            <span className="font-semibold text-gray-900 dark:text-white">{filteredProducts.length}</span> products
           </div>
           
           <div className="flex gap-2">
             <button
               onClick={() => setViewMode("grid")}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              className={`px-4 py-2 rounded-lg transition-colors cursor-pointer ${
                 viewMode === "grid"
                   ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  : "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700"
               }`}
             >
               Grid
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              className={`px-4 py-2 rounded-lg transition-colors cursor-pointer ${
                 viewMode === "list"
                   ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  : "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700"
               }`}
             >
               List
@@ -216,13 +216,13 @@ export default function ProductList() {
             {currentProducts.map((p) => (
               <li
                 key={p.id}
-                className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 ${
+                className={`bg-white dark:bg-slate-900 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 dark:border-slate-800 ${
                   viewMode === "list" ? "flex" : ""
                 }`}
               >
                 <Link
                   href={`/products/${p.id}`}
-                  className={`relative overflow-hidden bg-gray-50 ${
+                  className={`relative overflow-hidden bg-gray-50 dark:bg-slate-800/40 ${
                     viewMode === "grid" 
                       ? "block aspect-square" 
                       : "w-48 h-48 flex-shrink-0"
@@ -254,13 +254,13 @@ export default function ProductList() {
 
                 <div className={`p-4 ${viewMode === "list" ? "flex-1 flex flex-col justify-between" : ""}`}>
                   <div>
-                    <h2 className={`font-semibold text-gray-900 mb-1 ${
+                    <h2 className={`font-semibold text-gray-900 dark:text-slate-100 mb-1 ${
                       viewMode === "grid" ? "text-base line-clamp-2 min-h-[3rem]" : "text-lg"
                     }`}>
                       {p.title || p.name}
                     </h2>
 
-                    <p className={`text-sm text-gray-600 mb-3 ${
+                    <p className={`text-sm text-gray-600 dark:text-slate-400 mb-3 ${
                       viewMode === "grid" ? "line-clamp-2" : "line-clamp-3"
                     }`}>
                       {p.description || "No description available"}
@@ -271,11 +271,11 @@ export default function ProductList() {
                     viewMode === "list" ? "justify-between" : "justify-between"
                   } gap-2`}>
                     <div>
-                      <span className="text-xl font-bold text-indigo-600">
-                        ${p.price}
+                      <span className="text-xl font-bold text-indigo-600 dark:text-blue-400">
+                        ฿{p.price}
                       </span>
                       {p.stock > 0 && (
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-500 dark:text-slate-500 mt-1">
                           Stock: {p.stock}
                         </p>
                       )}
@@ -293,14 +293,14 @@ export default function ProductList() {
                         carts.find((cart) => cart.productId === p.id) ? (
                           <button
                             onClick={(e) => handleAddedBtn(e)}
-                            className="px-4 py-2 text-white rounded-lg bg-blue-900 hover:bg-blue-700 transition-all"
+                            className="px-4 py-2 text-white rounded-lg bg-blue-900 dark:bg-blue-950 hover:bg-blue-700 transition-all"
                           >
                             Added
                           </button>
                         ) : (
                           <button
                             onClick={(e) => handleAddToCart(e, p.id)}
-                            className="px-4 py-2 text-white rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
+                            className="px-4 py-2 text-white rounded-lg bg-blue-600 hover:bg-blue-700 transition-all animate-pulse"
                           >
                             Add to Cart
                           </button>
@@ -331,16 +331,16 @@ export default function ProductList() {
         )}
 
         {/* PAGINATION */}
-        <div className="flex justify-between items-center mt-8 mb-8">
+        <div className="flex justify-between items-center mt-8 mb-8 text-sm">
           <div>
-            <label className="mr-2 text-gray-600">Rows per page:</label>
+            <label className="mr-2 text-gray-600 dark:text-slate-400">Rows per page:</label>
             <select
               value={pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className="border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value={4}>4</option>
               <option value={8}>8</option>
@@ -353,19 +353,19 @@ export default function ProductList() {
             <button
               onClick={goPrev}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-white border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
             >
               Previous
             </button>
 
-            <span className="text-gray-700 font-medium">
+            <span className="text-gray-700 dark:text-slate-300 font-medium">
               Page {currentPage} of {totalPages || 1}
             </span>
 
             <button
               onClick={goNext}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-white border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
             >
               Next
             </button>

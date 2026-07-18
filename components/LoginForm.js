@@ -47,17 +47,17 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-950 dark:to-indigo-950 flex items-center justify-center p-4 transition-colors duration-300">
+      <div className="bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100 mb-2 font-display">
             Welcome Back
           </h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <p className="text-gray-600 dark:text-slate-400">Sign in to your account</p>
         </div>
 
         {errorMsg && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center gap-2">
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-lg text-red-700 dark:text-red-400 text-sm flex items-center gap-2">
             <span>❌</span>
             <span>{errorMsg}</span>
           </div>
@@ -65,7 +65,7 @@ export default function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-gray-900 font-medium mb-2">
+            <label className="block text-gray-900 dark:text-slate-200 font-medium mb-2">
               Email Address
             </label>
             <input
@@ -74,12 +74,12 @@ export default function LoginForm() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="name@company.com"
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-850 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-slate-200 placeholder-gray-400"
             />
           </div>
 
           <div>
-            <label className="block text-gray-900 font-medium mb-2">
+            <label className="block text-gray-900 dark:text-slate-200 font-medium mb-2">
               Password
             </label>
             <input
@@ -88,7 +88,7 @@ export default function LoginForm() {
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-850 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-slate-200"
             />
           </div>
 
@@ -98,13 +98,13 @@ export default function LoginForm() {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-blue-600"
+                className="w-4 h-4 border-gray-300 dark:border-slate-800 rounded focus:ring-2 focus:ring-blue-500 text-blue-600 dark:bg-slate-950"
               />
-              <span className="ml-2 text-gray-700">Remember me</span>
+              <span className="ml-2 text-gray-700 dark:text-slate-300 text-sm">Remember me</span>
             </label>
             <Link
               href="/forgot-password"
-              className="text-blue-600 hover:text-blue-700 hover:underline font-medium text-sm"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-medium text-sm"
             >
               Forgot password?
             </Link>
@@ -113,7 +113,7 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-white font-semibold py-3 px-4 rounded-lg"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-white font-semibold py-3 px-4 rounded-lg cursor-pointer"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-2">
@@ -129,10 +129,10 @@ export default function LoginForm() {
           </button>
 
           <div className="text-center pt-4">
-            <span className="text-gray-600">Don't have an account yet? </span>
+            <span className="text-gray-600 dark:text-slate-400">Don't have an account yet? </span>
             <Link
               href="/register"
-              className="text-blue-600 hover:text-blue-700 hover:underline font-semibold"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-semibold"
             >
               Sign up
             </Link>
@@ -141,4 +141,5 @@ export default function LoginForm() {
       </div>
     </div>
   );
+
 }

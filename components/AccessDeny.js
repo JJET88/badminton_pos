@@ -4,17 +4,17 @@ import Link from "next/link";
 
 export default function AccessDeny() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 relative overflow-hidden p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 px-4 relative overflow-hidden p-4 text-slate-800 dark:text-slate-100 transition-colors duration-300">
       {/* Soft floating blobs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-32 -left-32 w-72 h-72 bg-red-200 rounded-full mix-blend-multiply blur-2xl opacity-70 animate-blob" />
-        <div className="absolute -top-32 -right-32 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply blur-2xl opacity-70 animate-blob-delay-2" />
-        <div className="absolute bottom-0 left-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply blur-2xl opacity-70 animate-blob-delay-4" />
+        <div className="absolute -top-32 -left-32 w-72 h-72 bg-red-200 dark:bg-red-950/20 rounded-full mix-blend-multiply blur-2xl opacity-70 animate-blob" />
+        <div className="absolute -top-32 -right-32 w-72 h-72 bg-pink-200 dark:bg-pink-950/20 rounded-full mix-blend-multiply blur-2xl opacity-70 animate-blob-delay-2" />
+        <div className="absolute bottom-0 left-20 w-72 h-72 bg-purple-200 dark:bg-purple-950/20 rounded-full mix-blend-multiply blur-2xl opacity-70 animate-blob-delay-4" />
       </div>
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-md">
-        <div className="bg-white/90 backdrop-blur-xl border border-white/50 rounded-2xl shadow-2xl p-10 text-center">
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/50 dark:border-slate-800 rounded-2xl shadow-2xl p-10 text-center">
           {/* Icon Box */}
           <div className="flex items-center justify-center mb-6">
             <div className="w-20 h-20 flex items-center justify-center bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl shadow-lg transform transition hover:scale-110">
@@ -36,18 +36,17 @@ export default function AccessDeny() {
           </div>
 
           {/* Text */}
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-slate-100 mb-2 font-display">
             Access Denied
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 dark:text-slate-405 mb-8">
             You do not have permission to access the admin dashboard.
-            
           </p>
 
           {/* Button */}
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-lg hover:bg-blue-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-lg hover:bg-blue-700 hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -25,14 +25,16 @@ export default function DashboardLayout({ children }) {
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useAuthStore();
-
+  const user = useAuthStore((s) => s.user);
+  const hasHydrated = useAuthStore((s) => s.hasHydrated);
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // 🔐 ROLE-BASED PROTECTION
   useEffect(() => {
+    if (!hasHydrated) return;
+
     if (!user) {
       router.replace("/login");
       return;
@@ -56,7 +58,7 @@ export default function DashboardLayout({ children }) {
         router.replace("/accessDeny");
       }
     }
-  }, [user, pathname, router]);
+  }, [user, hasHydrated, pathname, router]);
 
   const menu = [
     { name: "Home", path: "/", icon: FiExternalLink },
@@ -67,6 +69,19 @@ export default function DashboardLayout({ children }) {
     { name: "Users", path: "/dashboard/users", icon: FiUsers },
     { name: "Settings", path: "/dashboard/settings", icon: FiSettings },
   ];
+
+  if (!hasHydrated) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-slate-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Prevent flash of unauthorized content if they are not logged in/allowed
+  if (!user || !["admin", "cashier"].includes(user.role)) {
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">

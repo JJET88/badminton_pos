@@ -9,6 +9,9 @@ const useAuthStore = create(
       user: null,
       isLoading: false,
       error: null,
+      hasHydrated: false,
+
+      setHasHydrated: (val) => set({ hasHydrated: val }),
 
       // -----------------------------
       // SET USER
@@ -301,6 +304,9 @@ const useAuthStore = create(
     {
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
       partialize: (state) => ({ 
         user: state.user,
       }),

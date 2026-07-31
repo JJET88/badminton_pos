@@ -17,7 +17,7 @@ export async function GET(req, { params }) {
 
     // Select all columns, let the database handle which ones exist
     const [rows] = await db.query(
-      'SELECT id, name, email, role, points, createdAt, updatedAt FROM users WHERE id = ?',
+      'SELECT id, name, email, role, points, image, createdAt, updatedAt FROM users WHERE id = ?',
       [id]
     );
 
@@ -44,7 +44,7 @@ export async function PUT(request, { params }) {
     }
 
     const body = await request.json();
-    const { name, email, password, role } = body;
+    const { name, email, password, role, image } = body;
 
     console.log('📝 PUT /api/users/[id] called:', { id, name, email, role, hasPassword: !!password });
 
@@ -124,15 +124,21 @@ export async function PUT(request, { params }) {
 
     // Validate and add role
     if (role !== undefined) {
-      const validRoles = ['user', 'admin'];
+      const validRoles = ['user', 'admin', 'cashier'];
       if (!validRoles.includes(role)) {
         return NextResponse.json(
-          { error: 'Invalid role. Must be "user" or "admin"' },
+          { error: 'Invalid role. Must be "user", "admin", or "cashier"' },
           { status: 400 }
         );
       }
       updates.push('role = ?');
       updateParams.push(role);
+    }
+
+    // Add image if passed
+    if (image !== undefined) {
+      updates.push('image = ?');
+      updateParams.push(image || null);
     }
 
     if (updates.length === 0) {
@@ -153,7 +159,7 @@ export async function PUT(request, { params }) {
 
     // Fetch updated user
     const [updated] = await db.query(
-      'SELECT id, name, email, role, points, createdAt, updatedAt FROM users WHERE id = ?',
+      'SELECT id, name, email, role, points, image, createdAt, updatedAt FROM users WHERE id = ?',
       [id]
     );
 

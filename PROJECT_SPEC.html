@@ -286,16 +286,32 @@
           <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
             <div class="flex items-center justify-between mb-4">
               <h3 class="font-semibold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="px-2.5 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-200 text-xs font-bold uppercase">user</span>
+                <span class="px-2.5 py-1 rounded bg-green-100 text-green-800 dark:bg-green-950/80 dark:text-green-200 text-xs font-bold uppercase">cashier</span>
                 <span>Cashier Operator</span>
               </h3>
             </div>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Storefront operator processing customer orders.</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Retail store checkout operator.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300">
-              <span class="flex items-center gap-2">🛒 Add items to carts and calculate subtotal/tax</span>
-              <span class="flex items-center gap-2">⭐ Apply client rewards point discounts (10 pts = ฿1)</span>
-              <span class="flex items-center gap-2">🏷️ Verify and apply discount codes</span>
-              <span class="flex items-center gap-2">📜 Look up past transaction records processed under their ID</span>
+              <span class="flex items-center gap-2">🛒 Add items to carts and process point-of-sale checkout</span>
+              <span class="flex items-center gap-2">⭐ Apply client rewards point discounts</span>
+              <span class="flex items-center gap-2">🏷️ Verify and apply discount voucher codes</span>
+              <span class="flex items-center gap-2">📊 Access sales history tables and core dashboard metrics</span>
+            </div>
+          </div>
+          <!-- Customer / Member -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-200 text-xs font-bold uppercase">user</span>
+                <span>Customer / Member</span>
+              </h3>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Registered store member or retail customer.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300">
+              <span class="flex items-center gap-2">🛍️ Browse inventory product catalog</span>
+              <span class="flex items-center gap-2">👤 Update personal member profiles and custom avatar images</span>
+              <span class="flex items-center gap-2">⭐ View earned loyalty point balance</span>
+              <span class="flex items-center gap-2">📜 Access personal historical purchase records</span>
             </div>
           </div>
         </div>
@@ -400,8 +416,9 @@
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+  role ENUM('admin', 'user', 'cashier') NOT NULL DEFAULT 'user',
   points INT DEFAULT 0,
+  image VARCHAR(255) DEFAULT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

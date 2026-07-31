@@ -40,7 +40,7 @@ export async function GET(req) {
     console.log('🔍 Querying user from database, userId:', userId);
 
     const [rows] = await mysqlPool.query(
-      "SELECT id, name, email, role, points, createdAt, updatedAt FROM users WHERE id = ?",
+      "SELECT id, name, email, role, points, image, createdAt, updatedAt FROM users WHERE id = ?",
       [userId]
     );
 
@@ -59,6 +59,7 @@ export async function GET(req) {
       email: user.email,
       role: user.role || 'user',
       points: user.points ?? 0,
+      image: user.image || null,
       createdAt: user.createdAt ? new Date(user.createdAt).toISOString() : null,
       updatedAt: user.updatedAt ? new Date(user.updatedAt).toISOString() : null,
     };

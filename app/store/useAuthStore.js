@@ -26,6 +26,7 @@ const useAuthStore = create(
           email: user?.email,
           name: user?.name,
           role: user?.role || "user",
+          image: user?.image || null,
         };
         set({ user: safeUser, error: null });
       },

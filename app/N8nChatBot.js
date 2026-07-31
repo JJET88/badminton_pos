@@ -4,14 +4,12 @@ import { useEffect } from "react";
 
 export default function N8nChatBot() {
   useEffect(() => {
-    if (window.__n8nChatLoaded) return;
+    let active = true;
 
     async function loadChat() {
       let user = {
-      
         customerName: "Guest",
         customerEmail: "",
-       
       };
 
       try {
@@ -20,15 +18,13 @@ export default function N8nChatBot() {
           credentials: "include",
         });
 
-        if (res.ok) {
+        if (res.ok && active) {
           const data = await res.json();
 
           if (data?.user) {
             user = {
-              
               customerName: data.user.name || data.user.email || "Guest",
               customerEmail: data.user.email || "",
-             
             };
           }
         }
@@ -36,10 +32,11 @@ export default function N8nChatBot() {
         console.error("Failed to get logged-in user:", error);
       }
 
+      if (!active) return;
+
       console.log("N8N CHAT USER:", user);
 
-      window.__n8nChatLoaded = true;
-
+      // Load stylesheet if not already present
       if (!document.querySelector('link[data-n8n-chat-css="true"]')) {
         const css = document.createElement("link");
         css.rel = "stylesheet";
@@ -48,10 +45,23 @@ export default function N8nChatBot() {
         document.head.appendChild(css);
       }
 
+      const container = document.getElementById("n8n-chat");
+      if (!container) return;
+
+      // Clean container first to ensure fresh mount and prevent duplicates
+      container.innerHTML = "";
+
+      // Remove existing script tag if any
+      const existingScript = document.querySelector('script[data-n8n-chat-script="true"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+
       const script = document.createElement("script");
       script.type = "module";
       script.setAttribute("data-n8n-chat-script", "true");
 
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://unmagnified-wonda-nonfugitively.ngrok-free.dev/webhook/badminton-pos-chat/chat";
       const metadata = JSON.stringify(user);
       const initialMessages = JSON.stringify([
         `Hi ${user.customerName}`,
@@ -62,7 +72,7 @@ export default function N8nChatBot() {
         import { createChat } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
 
         createChat({
-          webhookUrl: "https://unmagnified-wonda-nonfugitively.ngrok-free.dev/webhook/badminton-pos-chat/chat",
+          webhookUrl: "${webhookUrl}",
           webhookConfig: {
             method: "POST",
             headers: {
@@ -97,6 +107,18 @@ export default function N8nChatBot() {
     }
 
     loadChat();
+
+    return () => {
+      active = false;
+      const existingScript = document.querySelector('script[data-n8n-chat-script="true"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+      const container = document.getElementById("n8n-chat");
+      if (container) {
+        container.innerHTML = "";
+      }
+    };
   }, []);
 
   return <div id="n8n-chat" />;

@@ -150,8 +150,13 @@ export default function Header({ search, setSearch }) {
 							{/* User Info */}
 							<div className="px-4 py-4 border-b border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/40">
 								<div className="flex items-center gap-3">
-									<div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
-										{user.name?.charAt(0).toUpperCase() || "U"}
+									<div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden">
+										{user.image ? (
+											/* eslint-disable-next-line @next/next/no-img-element */
+											<img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+										) : (
+											user.name?.charAt(0).toUpperCase() || "U"
+										)}
 									</div>
 									<div className="flex-1 min-w-0">
 										<p className="font-semibold text-sm truncate text-slate-900 dark:text-slate-100">{user.name}</p>
@@ -190,14 +195,16 @@ export default function Header({ search, setSearch }) {
 								<span className="font-medium">Purchase History</span>
 							</Link>
 
-							{user.role === "admin" && (
+							{(user.role === "admin" || user.role === "cashier") && (
 								<Link
 									href="/dashboard"
 									onClick={() => setShowMobileMenu(false)}
 									className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-800"
 								>
 									<FiSettings className="text-xl text-purple-600" />
-									<span className="font-medium">Admin Dashboard</span>
+									<span className="font-medium">
+										{user.role === "admin" ? "Admin Dashboard" : "Cashier Dashboard"}
+									</span>
 								</Link>
 							)}
 

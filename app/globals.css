@@ -2,27 +2,74 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Global Smooth Transitions */
+*, *::before, *::after {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom Scrollbar for a Premium Look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Custom Page Fade-In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* n8n Chatbot Styling Overrides */
+:root {
+  --chat--color-primary: #1e40af; /* Blue-800 matches top header */
+  --chat--color-secondary: #f0f5ff; /* Soft blue-gray bubble */
+  --chat--color-dark: #0f172a;
+  --chat--color-light: #ffffff;
+  --chat--border-radius: 16px;
+  --chat--font-family: var(--font-geist-sans), system-ui, sans-serif;
+  --chat--window--width: 380px;
+  --chat--window--height: 520px;
+}
+
+/* n8n Chatbot Dark Mode Styling Overrides */
+.dark {
+  --chat--color-primary: #3b82f6; /* Blue-500 matches active elements */
+  --chat--color-secondary: #1e293b; /* slate-800 bubble */
+  --chat--color-dark: #f8fafc; /* light text */
+  --chat--color-light: #0f172a; /* slate-900 window */
+  --chat--input--background: #1e293b;
+  --chat--message--user--background: #3b82f6;
+}

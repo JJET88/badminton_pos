@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiUser, FiShield, FiStar, FiMail, FiCalendar, FiFilter, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiUser, FiShield, FiStar, FiMail, FiCalendar, FiFilter, FiX, FiChevronLeft, FiChevronRight, FiShoppingCart } from 'react-icons/fi';
 
 export default function UserDashboard() {
   const [users, setUsers] = useState([]);
@@ -21,7 +21,8 @@ export default function UserDashboard() {
     email: '',
     role: 'user',
     password: '',
-    points: 0
+    points: 0,
+    image: ''
   });
   const [formError, setFormError] = useState('');
   const [formLoading, setFormLoading] = useState(false);
@@ -69,7 +70,8 @@ export default function UserDashboard() {
       email: '',
       role: 'user',
       password: '',
-      points: 0
+      points: 0,
+      image: ''
     });
     setFormError('');
     setShowModal(true);
@@ -83,7 +85,8 @@ export default function UserDashboard() {
       email: user.email,
       role: user.role,
       password: '',
-      points: user.points || 0
+      points: user.points || 0,
+      image: user.image || ''
     });
     setFormError('');
     setShowModal(true);
@@ -112,7 +115,8 @@ export default function UserDashboard() {
           name: formData.name,
           email: formData.email,
           role: formData.role,
-          points: formData.points
+          points: formData.points,
+          image: formData.image || null
         };
         
         if (formData.password && formData.password.length >= 6) {
@@ -213,6 +217,7 @@ export default function UserDashboard() {
   const stats = {
     total: users.length,
     admins: users.filter(u => u.role === 'admin').length,
+    cashiers: users.filter(u => u.role === 'cashier').length,
     users: users.filter(u => u.role === 'user').length,
     totalPoints: users.reduce((sum, u) => sum + (u.points || 0), 0)
   };
@@ -255,11 +260,11 @@ export default function UserDashboard() {
           <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-slate-800">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-slate-400 mb-1">Regular Users</p>
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.users}</p>
+                <p className="text-sm text-gray-600 dark:text-slate-400 mb-1">Cashiers</p>
+                <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.cashiers}</p>
               </div>
               <div className="w-12 h-12 bg-green-100 dark:bg-green-950/50 rounded-lg flex items-center justify-center">
-                <FiUser className="text-2xl text-green-600 dark:text-green-400" />
+                <FiShoppingCart className="text-2xl text-green-600 dark:text-green-400" />
               </div>
             </div>
           </div>
@@ -301,6 +306,7 @@ export default function UserDashboard() {
                 >
                   <option value="">All Roles</option>
                   <option value="admin">Admin</option>
+                  <option value="cashier">Cashier</option>
                   <option value="user">User</option>
                 </select>
               </div>
@@ -352,12 +358,13 @@ export default function UserDashboard() {
                       <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-slate-850/50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white relative overflow-hidden shadow-sm">
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                                </svg>
-                              </div>
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-sm relative overflow-hidden shadow-sm">
+                              {user.image ? (
+                                /* eslint-disable-next-line @next/next/no-img-element */
+                                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                              ) : (
+                                user.name?.charAt(0).toUpperCase() || "U"
+                              )}
                             </div>
                             <div className="ml-3">
                               <p className="text-sm font-medium text-gray-900 dark:text-slate-100">{user.name}</p>
@@ -375,9 +382,11 @@ export default function UserDashboard() {
                           <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
                             user.role === 'admin' 
                               ? 'bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300' 
+                              : user.role === 'cashier'
+                              ? 'bg-green-100 dark:bg-green-950/80 text-green-700 dark:text-green-300'
                               : 'bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300'
                           }`}>
-                            {user.role === 'admin' ? <FiShield /> : <FiUser />}
+                            {user.role === 'admin' ? <FiShield /> : user.role === 'cashier' ? <FiShoppingCart /> : <FiUser />}
                             {user.role.toUpperCase()}
                           </span>
                         </td>
@@ -475,6 +484,17 @@ export default function UserDashboard() {
               </div>
 
               <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-350 mb-1">Avatar Image URL (Optional)</label>
+                <input
+                  type="url"
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="https://example.com/avatar.jpg"
+                />
+              </div>
+
+              <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-slate-350 mb-1">Email *</label>
                 <input
                   type="email"
@@ -493,6 +513,7 @@ export default function UserDashboard() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
                 >
                   <option value="user">User</option>
+                  <option value="cashier">Cashier</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>

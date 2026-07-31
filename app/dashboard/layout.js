@@ -31,17 +31,32 @@ export default function DashboardLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // 🔐 ADMIN PROTECTION
+  // 🔐 ROLE-BASED PROTECTION
   useEffect(() => {
     if (!user) {
       router.replace("/login");
       return;
     }
 
-    if (user.role !== "admin") {
+    const allowedRoles = ["admin", "cashier"];
+    if (!allowedRoles.includes(user.role)) {
       router.replace("/accessDeny");
+      return;
     }
-  }, [user, router]);
+
+    // Cashier cannot access products, vouchers, or user management folders
+    if (user.role === "cashier") {
+      const forbiddenPaths = [
+        "/dashboard/products",
+        "/dashboard/voucher",
+        "/dashboard/users",
+        "/dashboard/userManage"
+      ];
+      if (forbiddenPaths.includes(pathname)) {
+        router.replace("/accessDeny");
+      }
+    }
+  }, [user, pathname, router]);
 
   const menu = [
     { name: "Home", path: "/", icon: FiExternalLink },
@@ -152,7 +167,14 @@ export default function DashboardLayout({ children }) {
 
         {/* Navigation Menu */}
         <nav className="flex-1 flex flex-col space-y-1 p-3 overflow-y-auto">
-          {menu.map((item) => {
+          {menu
+            .filter(item => {
+              if (user?.role === "cashier") {
+                return !["/dashboard/products", "/dashboard/voucher", "/dashboard/users"].includes(item.path);
+              }
+              return true;
+            })
+            .map((item) => {
             const active = pathname === item.path;
             const Icon = item.icon;
 
@@ -198,8 +220,13 @@ export default function DashboardLayout({ children }) {
           <div className="p-4 border-t border-gray-200 dark:border-slate-800">
             <div className="px-4 py-3 bg-gray-50 dark:bg-slate-800/40 rounded-lg">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                  {user.name?.charAt(0).toUpperCase()}
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold overflow-hidden">
+                  {user.image ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                  ) : (
+                    user.name?.charAt(0).toUpperCase()
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 dark:text-slate-200 truncate">{user.name}</p>
@@ -220,8 +247,13 @@ export default function DashboardLayout({ children }) {
         {/* Collapsed User Avatar */}
         {user && collapsed && (
           <div className="hidden lg:flex p-4 border-t border-gray-200 dark:border-slate-800 justify-center">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-              {user.name?.charAt(0).toUpperCase()}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold overflow-hidden">
+              {user.image ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user.name?.charAt(0).toUpperCase()
+              )}
             </div>
           </div>
         )}

@@ -37,12 +37,17 @@ export default function AvatarDropDown() {
             className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all relative cursor-pointer"
           >
             {/* Avatar */}
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md relative">
-              {user.name?.charAt(0).toUpperCase() || "U"}
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md relative overflow-hidden">
+              {user.image ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user.name?.charAt(0).toUpperCase() || "U"
+              )}
 
               {/* Small Points Badge */}
               {userPoints > 0 && (
-                <span className="absolute -bottom-1 -right-1 bg-yellow-400 text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-md">
+                <span className="absolute -bottom-1 -right-1 bg-yellow-400 text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-md z-10">
                   {userPoints > 999 ? "999+" : userPoints}
                 </span>
               )}
@@ -88,6 +93,8 @@ export default function AvatarDropDown() {
                     className={`flex-shrink-0 px-2 py-0.5 rounded-full text-[10px] font-medium ${
                       user.role === "admin"
                         ? "bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300"
+                        : user.role === "cashier"
+                        ? "bg-green-100 dark:bg-green-950/80 text-green-700 dark:text-green-300"
                         : "bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300"
                     }`}
                   >
@@ -130,14 +137,16 @@ export default function AvatarDropDown() {
                 <span className="font-medium">Purchase History</span>
               </Link>
 
-              {user.role === "admin" && (
+              {(user.role === "admin" || user.role === "cashier") && (
                 <Link
                   href="/dashboard"
                   onClick={() => setShowDropdown(false)}
                   className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors"
                 >
                   <FiSettings className="text-lg text-purple-600" />
-                  <span className="font-medium">Admin Dashboard</span>
+                  <span className="font-medium">
+                    {user.role === "admin" ? "Admin Dashboard" : "Cashier Dashboard"}
+                  </span>
                 </Link>
               )}
 

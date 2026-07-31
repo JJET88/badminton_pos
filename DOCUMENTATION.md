@@ -53,8 +53,9 @@ CREATE TABLE IF NOT EXISTS users (
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+  role ENUM('admin', 'user', 'cashier') NOT NULL DEFAULT 'user',
   points INT DEFAULT 0,
+  image VARCHAR(255) DEFAULT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Kept for compatibility with select endpoints
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -186,8 +187,9 @@ The interfaces are organized as reusable files under `/components` and routed in
 
 ### 6. AI Assistant Widget (`N8nChatBot.js`)
 - Embedded chatbot bubble using `@n8n/chat` dynamically injected on client mount.
-- Auto-detects active cashier session credentials via `/api/auth/me` to pre-fill personalization variables.
-- Connects to an external n8n workflow webhook to process inventory, sales, and guidance requests.
+- Auto-detects active session credentials via `/api/auth/me` to pre-fill personalization variables.
+- Connects to an external n8n workflow webhook to process inventory, sales, and system usage requests.
+- Customized using light and dark mode stylesheet configurations.
 
 ---
 
@@ -279,3 +281,62 @@ Once build succeeds, run the server with:
 ```bash
 npm run start
 ```
+
+---
+
+## 8. AI Retrieval-Augmented Multi-Agent Framework Architecture (For Academic Research)
+
+This section maps the badminton POS application architecture directly to your research topic: *"Design and Evaluation of a Retrieval-Augmented Multi-Agent AI Customer Support Framework for Retail Point-of-Sale Systems"*.
+
+```
+   ┌──────────────────────────────────────────────────────────┐
+   │                  React Client Frontend                   │
+   │    (Header, Cart, Checkout, Dashboard, N8nChatBot)      │
+   └────────────────────────────┬─────────────────────────────┘
+                                │ Webhook Request / API Poll
+                                ▼
+   ┌──────────────────────────────────────────────────────────┐
+   │          n8n Multi-Agent AI Orchestration Layer           │
+   │     (Retrieves POS context, orchestrates task agents)    │
+   └──────┬─────────────────────┬──────────────────────┬──────┘
+          │ Query Catalog        │ Query Points         │ Check Sales
+          ▼                      ▼                      ▼
+   ┌──────────────┐       ┌──────────────┐       ┌──────────────┐
+   │  Products    │       │  Users       │       │  Sales       │
+   │  API Endpoint│       │  API Endpoint│       │  API Endpoint│
+   └──────┬───────┘       └──────┬───────┘       └──────┬───────┘
+          │                      │                      │
+          ▼                      ▼                      ▼
+   ┌──────────────────────────────────────────────────────────┐
+   │            Relational Database Storage Layer             │
+   │             (MySQL / TiDB Connection Pool)               │
+   └──────────────────────────────────────────────────────────┘
+```
+
+### Key Framework Components
+
+#### A. Client-Side Chat Agent Mounting (`N8nChatBot.js`)
+- **Session-Aware Parameter Initialization**: Rather than exposing static chatbot interfaces, the component fetches active user session context (`name`, `email`, `role`, `points`) dynamically on mount and injects them as custom payload metadata.
+- **Fast Refresh DOM Cleanup**: Ensures script elements and event listeners are properly disposed of on React unmount to prevent container duplication or blank widget anomalies during dynamic state changes.
+- **Theme Variables Synchronization**: Injects CSS variables directly targeting n8n elements (`--chat-client-primary-color`, background tokens) matching the app's active light/dark state.
+
+#### B. Retrieval-Augmented Generation (RAG) Data Flow
+1. **User Prompt Submission**: The cashier or client inputs a natural language inquiry (e.g., *"Do we have carbonex racket rackets in stock?"*).
+2. **Context Retrieval**: The n8n Multi-Agent orchestrator processes the input, identifies intent, and queries the respective POS REST endpoints (such as `GET /api/products?search=carbonex`).
+3. **Augmentation**: The raw JSON database query response (e.g. category, stock balance, price) is formatted and injected into the LLM context.
+4. **Natural Language Generation**: The agent responds with precise, real-time context (e.g., *"Yes, we have 4 Carbonex rackets in stock, priced at ฿1,200 each. Category: Badminton Rackets"*).
+
+#### C. Multi-Agent System Roles & Delegation
+In a retail environment, support requests vary between operations:
+- **Cashier Assist Agent**: Focuses on operational queries like product lookups, point balance redemptions, and voucher validity checks.
+- **Customer Help Agent**: Focuses on product specs, category catalog filters, and membership registration questions.
+- **Supervisor Agent (Orchestration Node)**: Classifies the incoming prompt, delegates it to the specialized sub-agent, compiles their retrievals, and verifies output accuracy.
+
+### Framework Evaluation Metrics for POS AI
+
+To evaluate this prototype in your research paper, consider measuring the following benchmarks:
+1. **Intent Classification Accuracy**: The percentage of user queries correctly routed to the correct agent (e.g. user details vs product catalog).
+2. **Retrieval Latency**: Time elapsed from query submission to retrieval of SQL parameters (target: < 2.5s).
+3. **Response Safety & Truthfulness (Hallucination Control)**: The rate at which responses match the exact inventory records stored in the database.
+4. **Redemption Task Completion Rate**: Success rate of multi-step cashier assistance tasks (e.g., checking user points and confirming point eligibility).
+

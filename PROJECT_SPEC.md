@@ -39,24 +39,32 @@ TawBayin Badminton POS is designed to streamline retail operations for badminton
 ---
 
 ## 4. User Roles
-The application identifies two primary roles:
+The application identifies three primary roles:
 
 ### 1. Administrator (`admin`)
-* **Privileges**: Access to the `/dashboard` routing path and all settings.
+* **Privileges**: Access to the full `/dashboard` routing path and all modules.
 * **Capabilities**:
   * View overall sales analytics and Recharts performance graph.
   * Create, edit, and delete products, including updating stock counts and images.
   * Create, edit, and delete promotional vouchers.
-  * Manage users (change cashier point totals, update passwords, promote to admin).
+  * Manage users (change cashier/member point totals, update passwords, alter roles).
   * Review transaction logs and delete sales (with option to restore inventory levels).
 
-### 2. Cashier (`user`)
+### 2. Cashier (`cashier`)
+* **Privileges**: Access to the catalog storefront (`/`), shopping cart (`/carts`), checkout section, and the `/dashboard` layout.
+* **Capabilities**:
+  * Search, filter, and process retail point-of-sale checkout transactions.
+  * Redeem customer points, apply voucher discount codes.
+  * View and review sales transactions history list.
+  * Update their personal account profiles and change their passwords.
+  * Strictly restricted from modifying product inventories, creating vouchers, or managing user accounts.
+
+### 3. Customer / Member (`user`)
 * **Privileges**: Access to the catalog storefront (`/`), shopping cart (`/carts`), and their own purchase log (`/purchase-history`).
 * **Capabilities**:
-  * Search, filter, and add products to the checkout cart.
-  * Process sales, redeem customer points, apply voucher discount codes.
-  * Update their personal account profiles and change their passwords.
-  * View history of sales processed by their own account.
+  * Search and browse product catalog details.
+  * Update their personal member profiles, select custom avatar images, and view their active loyalty point balance.
+  * Access their own historical purchase receipt transcripts.
 
 ---
 
@@ -114,7 +122,7 @@ The application identifies two primary roles:
 
 ## 6. Non-Functional Requirements
 * **Data Integrity**: Enforce database constraints: unique emails for users, unique titles for products, unique promotional codes for vouchers, and cascading restrictions preventing deletion of products/users/vouchers linked to historical sales.
-* **Security**: Enforce password encryption using `bcryptjs` with a cost factor of 10. API endpoints check JWT tokens. Dashboard layout blocks access to users without the `admin` role.
+* **Security**: Enforce password encryption using `bcryptjs` with a cost factor of 10. API endpoints check JWT tokens. Dashboard layout blocks access to users without the `admin` or `cashier` role.
 * **Performance**: Connection pool size of 10 with queue limits prevents connection leaks. Server-side search and filters keep payloads small.
 * **UI/UX Experience**: Built using modern, high-contrast dark and light layouts using Tailwind CSS v4, dynamic indicators (bounce notifications for shopping carts, loader animations, and SweetAlert2 confirmation alerts).
 
@@ -126,14 +134,15 @@ The application identifies two primary roles:
 CREATE DATABASE IF NOT EXISTS badminton_pos;
 USE badminton_pos;
 
--- 1. Users & Cashiers Table
+-- 1. Users Table
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+  role ENUM('admin', 'user', 'cashier') NOT NULL DEFAULT 'user',
   points INT DEFAULT 0,
+  image VARCHAR(255) DEFAULT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Keep compatibility
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

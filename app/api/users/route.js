@@ -9,7 +9,7 @@ export async function GET(request) {
     const role = searchParams.get('role');
     const search = searchParams.get('search');
 
-    let query = 'SELECT id, name, email, role, points, created_at FROM users WHERE 1=1';
+    let query = 'SELECT id, name, email, role, points, image, created_at FROM users WHERE 1=1';
     const params = [];
 
     // Filter by role
@@ -37,7 +37,7 @@ export async function GET(request) {
 // POST create user (REGISTER)
 export async function POST(request) {
   try {
-    const { name, email, role, password } = await request.json();
+    const { name, email, role, password, image } = await request.json();
 
     // Validation
     if (!name || name.trim() === '') {
@@ -70,9 +70,9 @@ export async function POST(request) {
       );
     }
 
-    if (!role || !['admin', 'user'].includes(role)) {
+    if (!role || !['admin', 'user', 'cashier'].includes(role)) {
       return NextResponse.json(
-        { error: 'Invalid role. Must be admin or user' },
+        { error: 'Invalid role. Must be admin, cashier, or user' },
         { status: 400 }
       );
     }
@@ -95,14 +95,14 @@ export async function POST(request) {
 
     // Insert user with default points
     const [result] = await mysqlPool.query(
-      `INSERT INTO users (name, email, role, password, points)
-       VALUES (?, ?, ?, ?, 0)`,
-      [name.trim(), email.trim(), role, hashed]
+      `INSERT INTO users (name, email, role, password, points, image)
+       VALUES (?, ?, ?, ?, 0, ?)`,
+      [name.trim(), email.trim(), role, hashed, image || null]
     );
 
     // Fetch created user
     const [rows] = await mysqlPool.query(
-      'SELECT id, name, email, role, points, created_at FROM users WHERE id = ?',
+      'SELECT id, name, email, role, points, image, created_at FROM users WHERE id = ?',
       [result.insertId]
     );
 
@@ -128,7 +128,7 @@ export async function POST(request) {
 export async function PUT(request) {
   try {
     const body = await request.json();
-    const { id, name, email, role, password, points } = body;
+    const { id, name, email, role, password, points, image } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -192,9 +192,9 @@ export async function PUT(request) {
     }
 
     if (role !== undefined) {
-      if (!['admin', 'user'].includes(role)) {
+      if (!['admin', 'user', 'cashier'].includes(role)) {
         return NextResponse.json(
-          { error: 'Invalid role. Must be admin or user' },
+          { error: 'Invalid role. Must be admin, cashier, or user' },
           { status: 400 }
         );
       }
@@ -225,6 +225,11 @@ export async function PUT(request) {
       params.push(points);
     }
 
+    if (image !== undefined) {
+      updates.push('image = ?');
+      params.push(image || null);
+    }
+
     if (updates.length === 0) {
       return NextResponse.json(
         { error: 'No fields to update' },
@@ -241,7 +246,7 @@ export async function PUT(request) {
 
     // Fetch updated user
     const [updated] = await mysqlPool.query(
-      'SELECT id, name, email, role, points, created_at FROM users WHERE id = ?',
+      'SELECT id, name, email, role, points, image, created_at FROM users WHERE id = ?',
       [id]
     );
 

@@ -14,7 +14,8 @@ import {
   FiCopy, 
   FiCheck, 
   FiAward, 
-  FiHash 
+  FiHash,
+  FiImage
 } from "react-icons/fi";
 
 export default function UserProfile() {
@@ -28,6 +29,7 @@ export default function UserProfile() {
   // Form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [image, setImage] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [copied, setCopied] = useState(false);
@@ -51,6 +53,7 @@ export default function UserProfile() {
       setUser(data);
       setName(data.name);
       setEmail(data.email);
+      setImage(data.image || "");
     } catch (err) {
       toast.error(err.message || 'Failed to load user');
       console.error('❌ Fetch user error:', err);
@@ -114,7 +117,8 @@ export default function UserProfile() {
       const updateData = {
         name: name.trim(),
         email: email.trim().toLowerCase(),
-        role: user.role
+        role: user.role,
+        image: image.trim() || null
       };
 
       // Only include password if it's not empty
@@ -142,7 +146,7 @@ export default function UserProfile() {
       
       // Update auth store only if updating own profile
       if (authUser?.id == userId) {
-        updateAuthUser({ name: updatedUser.name, email: updatedUser.email });
+        updateAuthUser({ name: updatedUser.name, email: updatedUser.email, image: updatedUser.image });
       }
       
       // Clear password fields
@@ -217,8 +221,13 @@ export default function UserProfile() {
           
           {/* Avatar Container */}
           <div className="relative group mb-4 mt-2">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg ring-4 ring-blue-55 dark:ring-slate-800/50 transition-all group-hover:scale-105">
-              {name.charAt(0).toUpperCase()}
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg ring-4 ring-blue-50 dark:ring-slate-800/50 transition-all group-hover:scale-105 overflow-hidden">
+              {image ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                name.charAt(0).toUpperCase()
+              )}
             </div>
             {/* Floating Role Badge */}
             <span className={`absolute bottom-0 right-0 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider border-2 border-white dark:border-slate-900 shadow-md ${
@@ -361,6 +370,25 @@ export default function UserProfile() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com"
                     required
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-slate-950/40 border border-gray-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/55 focus:border-transparent text-gray-900 dark:text-slate-100 placeholder-gray-400 transition-all font-medium"
+                  />
+                </div>
+              </div>
+
+              {/* Avatar Image URL */}
+              <div>
+                <label className="block text-sm text-gray-700 dark:text-slate-200 font-semibold mb-2">
+                  Avatar Image URL (Optional)
+                </label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <FiImage className="text-gray-400 dark:text-slate-500" />
+                  </span>
+                  <input
+                    type="url"
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    placeholder="https://example.com/avatar.jpg"
                     className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-slate-950/40 border border-gray-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/55 focus:border-transparent text-gray-900 dark:text-slate-100 placeholder-gray-400 transition-all font-medium"
                   />
                 </div>

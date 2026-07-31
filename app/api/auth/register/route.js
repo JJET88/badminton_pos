@@ -44,11 +44,11 @@ export async function POST(req) {
     }
 
     // Validate role
-    const validRoles = ['user', 'admin'];
+    const validRoles = ['user', 'admin', 'cashier'];
     const userRole = role || 'user';
     if (!validRoles.includes(userRole)) {
       return NextResponse.json(
-        { error: "Invalid role. Must be 'user' or 'admin'" },
+        { error: "Invalid role. Must be 'user', 'admin', or 'cashier'" },
         { status: 400 }
       );
     }

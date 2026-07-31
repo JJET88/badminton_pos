@@ -192,6 +192,7 @@ export default function RegisterPage() {
               className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-850 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-slate-200 cursor-pointer"
             >
               <option value="user">User</option>
+              <option value="cashier">Cashier</option>
               <option value="admin">Admin</option>
             </select>
           </div>

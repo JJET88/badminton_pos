@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import useAuthStore from "@/app/store/useAuthStore";
 
 export default function N8nChatBot() {
+  const storeUser = useAuthStore((s) => s.user);
+  const fetchUser = useAuthStore((s) => s.fetchUser);
+
   useEffect(() => {
     let active = true;
 
@@ -12,24 +16,33 @@ export default function N8nChatBot() {
         customerEmail: "",
       };
 
-      try {
-        const res = await fetch("/api/auth/me", {
-          method: "GET",
-          credentials: "include",
-        });
+      if (storeUser) {
+        user = {
+          customerName: storeUser.name || storeUser.email || "Guest",
+          customerEmail: storeUser.email || "",
+        };
+      } else {
+        try {
+          const res = await fetch("/api/auth/me", {
+            method: "GET",
+            credentials: "include",
+          });
 
-        if (res.ok && active) {
-          const data = await res.json();
+          if (res.ok && active) {
+            const data = await res.json();
 
-          if (data?.user) {
-            user = {
-              customerName: data.user.name || data.user.email || "Guest",
-              customerEmail: data.user.email || "",
-            };
+            if (data?.user) {
+              user = {
+                customerName: data.user.name || data.user.email || "Guest",
+                customerEmail: data.user.email || "",
+              };
+              // Sync user to Zustand store
+              fetchUser();
+            }
           }
+        } catch (error) {
+          console.error("Failed to get logged-in user:", error);
         }
-      } catch (error) {
-        console.error("Failed to get logged-in user:", error);
       }
 
       if (!active) return;
@@ -119,7 +132,7 @@ export default function N8nChatBot() {
         container.innerHTML = "";
       }
     };
-  }, []);
+  }, [storeUser?.email, storeUser?.name, fetchUser]);
 
   return <div id="n8n-chat" />;
 }
